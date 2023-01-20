@@ -5,7 +5,6 @@ body {
     margin: 0;
 }
 
-
 header {
     display: flex;
     flex-direction: row;
@@ -42,9 +41,28 @@ h1 {
 .photographer_section article h2 {
     color: #D3573C;
     font-size: 36px;
+    margin: 25px 0 0;
 }
 
 .photographer_section article img {
     height: 200px;
     width: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.photographe-location {
+    color: #D3573C;
+    margin: 0;
+}
+
+.photographe-description {
+    margin: 5px 0;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.photographe-tarif {
+    margin: 0;
+    font-size: 11px;
 }
