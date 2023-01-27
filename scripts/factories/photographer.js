@@ -10,6 +10,14 @@ function photographerFactory(data) {
   function getUserCardDOM() {
     const article = document.createElement('article');
     article.setAttribute('id', id);
+    const imgContainer = document.createElement('a');
+    imgContainer.classList.add('profile-picture-container');
+    imgContainer.setAttribute('href', 'photographer.html?id=' + id);
+    imgContainer.addEventListener('keypress', function (event) {
+      if (event.key === 'Enter') {
+        imgContainer.click();
+      }
+    });
     const img = document.createElement('img');
     img.setAttribute('src', picture);
     const h2 = document.createElement('h2');
@@ -23,8 +31,11 @@ function photographerFactory(data) {
     const tarif = document.createElement('p');
     tarif.textContent = price + '€/jour';
     tarif.classList.add('photographe-tarif');
-    article.appendChild(img);
-    article.appendChild(h2);
+
+    imgContainer.appendChild(img);
+    imgContainer.appendChild(h2);
+
+    article.appendChild(imgContainer);
     article.appendChild(location);
     article.appendChild(description);
     article.appendChild(tarif);

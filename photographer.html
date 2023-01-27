@@ -9,17 +9,49 @@
   </head>
   <body>
     <header>
-      <img src="assets/images/logo.png" class="logo" />
+      <a href="index.html" aria-label="Retour à la liste des photographes">
+        <img src="assets/images/logo.png" class="logo" />
+      </a>
     </header>
     <main id="main">
       <div class="photograph-header">
-        <div>
-          <h2></h2>
-          <p></p>
-          <p></p>
+        <div class="photographer-header">
+          <h1 id="name"></h1>
+          <div id="location"></div>
+          <div id="tagline"></div>
         </div>
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-        <img src="" alt="">
+        <img id="image" src="" alt="">
+      </div>
+      <div id="label">
+        <label for="select">Trier par</label>
+        <div>
+          <select name="" id="">
+            <option value="">Popularité</option>
+            <option value="">Date</option>
+            <option value="">Titre</option>
+          </select>
+        </div>
+      </div>
+      <section>
+        <div>
+          <img src="" alt="">
+          <div>
+            <p></p>
+            <button>
+              <i></i>
+            </button>
+          </div>
+        </div>
+      </section>
+      <div>
+        <div>
+          <p></p>
+          <i></i>
+        </div>
+        <div>
+          <p></p>
+        </div>
       </div>
     </main>
     <div id="contact_modal">

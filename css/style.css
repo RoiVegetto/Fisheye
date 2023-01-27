@@ -44,11 +44,18 @@ h1 {
     margin: 25px 0 0;
 }
 
-.photographer_section article img {
+.photographer_section article img, #image {
     height: 200px;
     width: 200px;
     object-fit: cover;
     border-radius: 50%;
+}
+
+.profile-picture-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-decoration : none;
 }
 
 .photographe-location {
@@ -65,4 +72,39 @@ h1 {
 .photographe-tarif {
     margin: 0;
     font-size: 11px;
+}
+
+#name {
+    color: #D3573C;
+    font-size: 50px;
+    font-weight: 100;
+    margin: 0;
+}
+
+#location {
+    color: #901c1c;
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#tagline {
+    font-size: 14px;
+    font-weight: 100;
+    margin: 20px 0 10px 0;
+}
+
+.photograph-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.photographer-header {
+    padding-bottom: 35px;
+}
+
+#label {
+    margin-left: 100px;
+    display: flex;
 }
