@@ -1,8 +1,8 @@
 /**
  * Ici on va prendre les éléments du DOM pour les modifier et ajouter les informations venant du fichier JSON
  * On vise le header de la page photographer
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
 
 function displayFactory(data) {
@@ -36,7 +36,7 @@ function displayFactory(data) {
 /**
  * Ici on va faire la même chose qu'au dessus avec de la création d'élément directement dans le JS
  * On vise la section des images des créateurs
- * @param {*} photographerId 
+ * @param {*} photographerId
  */
 
 async function displayMedias(photographerId) {
@@ -75,7 +75,7 @@ async function displayMedias(photographerId) {
 }
 
 /**
- * Cette fonction a pour but de rajouter l'id dans l'URL
+ * Cette fonction a pour but de rajouter l'id dans l'URL et de lancer la fonction displayMedia
  */
 
 async function getPhotographerDetails() {
@@ -90,7 +90,46 @@ async function getPhotographerDetails() {
   displayMedias(photographer.id);
 }
 
+/**
+ * Cette fonction crée les éléments du footer avec le prix du photographe et le nombre total de like qu'il possède
+ */
+
 getPhotographerDetails();
+
+async function displayFooter() {
+  const footer = document.getElementById('footer');
+  const photographers = await getPhotographers();
+  const medias = await getMedias();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
+
+  const photographer = photographers.find((p) => p.id === parseInt(id));
+  const price = photographer.price;
+
+  let totalLikes = 0;
+
+  const filteredMedias = medias.filter(
+    (media) => media.photographerId === parseInt(id)
+  );
+
+  filteredMedias.forEach((media) => {
+    totalLikes += media.likes;
+  });
+
+  const footerItem = `
+    <div class="footer-likes">
+      <div class="total">${totalLikes}</div>
+      <i id="black" class="fa-solid fa-heart"></i>
+    </div>
+    <div class="footer-price">
+      <div class="prix">${price}€ / jour</div>
+    </div>
+  `;
+  footer.innerHTML += footerItem;
+}
+
+displayFooter();
 
 /*let section = document.querySelector("section");
 let photographeImage = `<article>

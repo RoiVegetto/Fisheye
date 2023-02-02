@@ -21,7 +21,7 @@
     cursor: pointer;
 }
 
-.contact_button:hover:focus{
+.contact_button:hover, .contact_button:focus{
     background-color: #D3573C;
     color: black;
 }
@@ -126,4 +126,41 @@ section img, section video {
     color: #901C1C;
     background: none;
     font-size: 18px;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-right: 40px;
+    background-color: #DB8876;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 20px;
+    border-radius: 7px 7px 0 0;
+    width: 335px;
+}
+
+.footer-likes {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.total {
+  margin-right: 8px;
+}
+
+#black {
+    color: black;
+    font-size: 22px;
+}
+
+.footer-price {
+    font-weight: bold;
+    font-size: 22px;
+    margin-right: 15px;
 }
