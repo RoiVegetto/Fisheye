@@ -42,6 +42,7 @@ h1 {
     color: #D3573C;
     font-size: 36px;
     margin: 25px 0 0;
+    font-weight: 100;
 }
 
 .photographer_section article img, #image {
@@ -59,7 +60,7 @@ h1 {
 }
 
 .photographe-location {
-    color: #D3573C;
+    color: #901C1C;
     margin: 0;
 }
 
@@ -122,4 +123,8 @@ h1 {
 
 #select option {
     border-bottom: 1px solid white;
+}
+
+.input-message {
+    height: 200px;
 }

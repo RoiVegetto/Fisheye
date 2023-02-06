@@ -1,4 +1,4 @@
-const formulary = document.getElementById('form');
+const formulary = document.querySelector('form');
 
 /**
  * Ici displayModal sert a ouvrir la modal et closeModal sert a la fermer.
@@ -20,7 +20,7 @@ formulary.addEventListener('submit', function (ev) {
 
 function submitForm(event) {
   event.preventDefault();
-  if (document.getElementById('form').checkValidity()) {
+  if (formulary.checkValidity()) {
     closeModal();
   }
 }
