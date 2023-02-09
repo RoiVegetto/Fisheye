@@ -49,6 +49,7 @@
 
 .modal header img {
     cursor: pointer;
+    margin-bottom: 70px;
 }
 
 .modal header h2 {
@@ -163,4 +164,59 @@ section img, section video {
     font-weight: bold;
     font-size: 22px;
     margin-right: 15px;
+}
+
+.modal header {
+    margin: 20px 0 40px 0;
+}
+
+#name-form {
+    text-align: left;
+}
+
+.lightbox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 80%;
+    height: 80%;
+    background-color: blue;
+    display: none;
+}
+
+.lightbox-button {
+    height: 50px;
+    width: 50px;
+    position: relative;
+    top: 48%;
+}
+
+#g {
+    position: absolute;
+    left: 20px;
+    background-color: #901C1C;
+}
+
+#d {
+    position: absolute;
+    right: 20px;
+    background-color: #901C1C;
+}
+
+#close {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    right: 20px;
+    background-color: #901C1C;
+    top: 20px;
+}
+
+#lightbox-p {
+    position: absolute;
+    bottom: 30px;
+    left: 150px;
+    color: #901C1C;
+    font-size: 20px;
 }
