@@ -75,15 +75,8 @@ async function getPhotographerDetails() {
   const photographer = photographers.find(
     (photographer) => parseInt(photographer.id) === parseInt(id)
   );
-
-  if (!photographer) {
-    console.error("Photographer not found");
-    return;
-  }
-  displayMedias(photographer.id);
+  const medias = await getMedias();
+  return medias.filter(
+    (media) => media.photographerId === parseInt(photographer.id)
+  );
 }
-
-getPhotographerDetails();
-
-
-

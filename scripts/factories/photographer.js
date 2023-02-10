@@ -44,121 +44,44 @@ function displayFactory(data) {
  * On vise la section des images des créateurs
  * @param {*} photographerId
  */
-let filteredMedias;
-/*  const sortSelect = document.getElementById('sort-select');
-  sortSelect.addEventListener('change', function () {
-    switch (sortSelect.value) {
-      case 'likes':
-        return filteredMedias.sort((a, b) => b.likes - a.likes);
-      case 'date':
-        return filteredMedias.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-      case 'title':
-        return filteredMedias.sort((a, b) => a.title.localeCompare(b.title));
-    }
-  });*/
-  let mediaElement;
+let filteredMedias = [];
 
-  function imgVideo() {
-    filteredMedias.forEach((media, index) => {
-      if (media.image !== undefined) {
-        mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title}">`;
-      } else if (media.video !== undefined) {
-        mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}"></video>`;
-      }
-    });
-  }
-  
-  let mediaElements = [];
-  function imgVideo() {
-    filteredMedias.forEach((media, index) => {
-      let mediaElement;
-      if (media.image !== undefined) {
-        mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title}">`;
-      } else if (media.video !== undefined) {
-        mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}"></video>`;
-      }
-      mediaElements.push(mediaElement);
-    });
-  }
-  
-  async function displayMedias(photographerId) {
-    const section = document.getElementById('section');
-    section.innerHTML = '';
-    const medias = await getMedias();
-    filteredMedias = medias.filter(
-      (media) => media.photographerId === parseInt(photographerId)
-    );
-  
-    imgVideo();
-    mediaElements.forEach((mediaElement, index) => {
-      const media = filteredMedias[index];
-      const mediaItem = `
-        <div class="media">
-          ${mediaElement}
-          <div class="informations">
-            <p class="p">${media.title}</p>
-            <div id="media-likes">
-              <button class="button-like" onclick="toggleLike(this)" data-index="${index}">
-                <i>${media.likes}</i>
-              </button>
-              <i class="fa-solid fa-heart"></i>
+async function displayMedias() {
+  const section = document.getElementById('section');
+
+  section.innerHTML = '';
+  const medias = await getPhotographerDetails();
+  medias.forEach((media, index) => {
+    let mediaElement;
+    if (media.image !== undefined) {
+      mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title}">`;
+    } else if (media.video !== undefined) {
+      mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}"></video>`;
+    }
+    filteredMedias = medias;
+    const mediaItem = `
+          <div class="media">
+            ${mediaElement}
+            <div class="informations">
+              <p class="p">${media.title}</p>
+              <div id="media-likes">
+                <button class="button-like" onclick="toggleLike(this)" data-index="${index}">
+                  <i>${media.likes}</i>
+                </button>
+                <i class="fa-solid fa-heart"></i>
+              </div>
             </div>
           </div>
-        </div>
-      `;
-      section.innerHTML += mediaItem;
-    });
-    console.log(filteredMedias);
-  }
-  
-  displayMedias();
-  
-  
-
-/*async function sortMedias(sortCriteria) {
-  const medias = await getMedias();
-  let sortedMedias = [...filteredMedias];
-  filteredMedias = medias.slice();
-  switch (sortCriteria) {
-    case 'likes':
-      sortedMedias.sort((a, b) => b.likes - a.likes);
-      break;
-    case 'date':
-      sortedMedias.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        if (dateA < dateB) return -1;
-        if (dateA > dateB) return 1;
-        return 0;
-      });
-      break;
-    case 'title':
-      sortedMedias.sort((a, b) => {
-        const titleA = a.title.toLowerCase();
-        const titleB = b.title.toLowerCase();
-        if (titleA < titleB) return -1;
-        if (titleA > titleB) return 1;
-        return 0;
-      });
-      break;
-    default:
-      break;
-  }
-
+        `;
+    if (media.title === undefined) {
+      console.error('Media title is undefined');
+      return;
+    }
+    section.innerHTML += mediaItem;
+  });
 }
 
-
-const selector = document.querySelector('select');
-selector.addEventListener('change', () => {
-  const selectedOption = selector.value;
-  sortMedias(selectedOption);
-});*/
-
-/**
- * Cette fonction crée les éléments du footer avec le prix du photographe et le nombre total de like qu'il possède
- */
+displayMedias();
 
 async function displayFooter() {
   const footer = document.getElementById('footer');
@@ -194,3 +117,60 @@ async function displayFooter() {
 }
 
 displayFooter();
+
+/*  const sortSelect = document.getElementById('sort-select');
+  sortSelect.addEventListener('change', function () {
+    switch (sortSelect.value) {
+      case 'likes':
+        return filteredMedias.sort((a, b) => b.likes - a.likes);
+      case 'date':
+        return filteredMedias.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+      case 'title':
+        return filteredMedias.sort((a, b) => a.title.localeCompare(b.title));
+    }
+  });*/
+//displayMedias();
+
+/*async function sortMedias(sortCriteria) {
+  const medias = await getMedias();
+  let sortedMedias = [...filteredMedias];
+  filteredMedias = medias.slice();
+  switch (sortCriteria) {
+    case 'likes':
+      sortedMedias.sort((a, b) => b.likes - a.likes);
+      break;
+    case 'date':
+      sortedMedias.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        if (dateA < dateB) return -1;
+        if (dateA > dateB) return 1;
+        return 0;
+      });
+      break;
+    case 'title':
+      sortedMedias.sort((a, b) => {
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        if (titleA < titleB) return -1;
+        if (titleA > titleB) return 1;
+        return 0;
+      });
+      break;
+    default:
+      break;
+  }
+
+}
+
+const selector = document.querySelector('select');
+selector.addEventListener('change', () => {
+  const selectedOption = selector.value;
+  sortMedias(selectedOption);
+});*/
+
+/**
+ * Cette fonction crée les éléments du footer avec le prix du photographe et le nombre total de like qu'il possède
+ */
