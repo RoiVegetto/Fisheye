@@ -21,9 +21,6 @@ function displayFactory(data) {
 
     const taglineDiv = document.getElementById('tagline');
     taglineDiv.textContent = tagline;
-    // lightbox-p vise la tagline de la lightbox
-    const taglineLightbox = document.getElementById('lightbox-p');
-    taglineLightbox.textContent = tagline;
 
     const imgDiv = document.getElementById('image');
     imgDiv.setAttribute('src', picture);
@@ -44,7 +41,6 @@ function displayFactory(data) {
  * On vise la section des images des créateurs
  * @param {*} photographerId
  */
-let filteredMedias = [];
 
 async function displayMedias() {
   const section = document.getElementById('section');
@@ -58,7 +54,11 @@ async function displayMedias() {
     } else if (media.video !== undefined) {
       mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}"></video>`;
     }
-    filteredMedias = medias;
+    filteredMedias.push({
+      mediaElement,
+      title: media.title,
+      likes: media.likes,
+    }); // ajoute media.likes à filteredMedias
     const mediaItem = `
           <div class="media">
             ${mediaElement}
@@ -73,15 +73,30 @@ async function displayMedias() {
             </div>
           </div>
         `;
-    if (media.title === undefined) {
-      console.error('Media title is undefined');
-      return;
-    }
+
     section.innerHTML += mediaItem;
+  });
+
+  // Add event listeners for media elements
+  const mediaElements = document.querySelectorAll('.img-video');
+  mediaElements.forEach((mediaElement, index) => {
+    mediaElement.addEventListener('click', (event) => {
+      currentIndex = index;
+      displayLightbox(
+        filteredMedias[currentIndex].mediaElement,
+        filteredMedias[currentIndex].title
+      );
+    });
   });
 }
 
-displayMedias();
+let filteredMedias = [];
+let currentIndex = 0;
+let totalLikes = 0;
+
+/**
+ * Cette fonction gère le footer, le nombre de likes total de la page et le prix du photographe
+ */
 
 async function displayFooter() {
   const footer = document.getElementById('footer');
@@ -93,12 +108,6 @@ async function displayFooter() {
 
   const photographer = photographers.find((p) => p.id === parseInt(id));
   const price = photographer.price;
-
-  let totalLikes = 0;
-
-  const filteredMedias = medias.filter(
-    (media) => media.photographerId === parseInt(id)
-  );
 
   filteredMedias.forEach((media) => {
     totalLikes += media.likes;
@@ -116,6 +125,7 @@ async function displayFooter() {
   footer.innerHTML += footerItem;
 }
 
+displayMedias();
 displayFooter();
 
 /*  const sortSelect = document.getElementById('sort-select');
@@ -170,7 +180,3 @@ selector.addEventListener('change', () => {
   const selectedOption = selector.value;
   sortMedias(selectedOption);
 });*/
-
-/**
- * Cette fonction crée les éléments du footer avec le prix du photographe et le nombre total de like qu'il possède
- */

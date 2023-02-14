@@ -1,45 +1,69 @@
-window.onload = function () {
-  const lightboxImgVideo = document.querySelectorAll('.img-video');
-  const lightbox = document.querySelector('.lightbox');
-  const lightboxMedia = document.querySelector('.lightbox-media');
-  const lightboxClose = document.querySelector('.lightbox-close');
-  const lightboxButtonG = document.querySelector('#g');
-  const lightboxButtonD = document.querySelector('#d');
+/**
+ * Cette fonction crée l'html de la lightbox en dynamique avec ce qui est cliqué
+ * Les boutons permettent de switcher entre les photos
+ * Et si le contenu visé est une vidéo, alors elle sera jouable dans la lightbox
+ * @param {} mediaElement
+ * @param {*} title
+ */
 
-  const images = [];
+function displayLightbox(mediaElement, title) {
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxMediaDisplay = document.getElementById(
+    'lightbox-media-display'
+  );
+  lightboxModal.style.display = 'block';
 
-  lightboxImgVideo.forEach((thumbnail) => {
-    images.push(thumbnail.src);
-    thumbnail.addEventListener('click', (event) => {
-      if (event.target.matches('.img-video')) {
-        lightboxMedia.src = event.target.src;
-        lightbox.style.display = 'flex';
-        lightboxImgIndex = images.indexOf(event.target.src);
-      }
-    });
-  });
+  let mediaHtml = mediaElement;
 
-  let lightboxImgIndex = 0;
+  // Add controls to video element if it's a video
+  if (mediaElement.includes('video')) {
+    mediaHtml = mediaHtml.replace('<video', '<video controls');
+  }
 
-  lightboxButtonG.addEventListener('click', () => {
-    if (lightboxImgIndex === 0) {
-      lightboxImgIndex = images.length - 1;
-    } else {
-      lightboxImgIndex -= 1;
-    }
-    lightboxMedia.src = images[lightboxImgIndex];
-  });
+  lightboxMediaDisplay.innerHTML = `
+  <div class="lightbox-controls">
+    <button class="previous-button" onclick="previousImage()"><</button>
+    <h2 id="lightbox-media-title" class="img-text-lightbox">${title}</h2>
+    <button class="next-button" onclick="nextImage()">></button>
+  </div>
+  ${mediaHtml}
+`;
+}
 
-  lightboxButtonD.addEventListener('click', () => {
-    if (lightboxImgIndex === images.length - 1) {
-      lightboxImgIndex = 0;
-    } else {
-      lightboxImgIndex += 1;
-    }
-    lightboxMedia.src = images[lightboxImgIndex];
-  });
+/**
+ * Previous et Next sont les fonctions qui servent a aller a l'image suivante ou précédente
+ */
 
-  lightboxClose.addEventListener('click', (event) => {
-    lightbox.style.display = 'none';
-  });
-};
+function previousImage() {
+  currentIndex--;
+  if (currentIndex < 0) {
+    currentIndex = filteredMedias.length - 1;
+  }
+  displayLightbox(
+    filteredMedias[currentIndex].mediaElement,
+    filteredMedias[currentIndex].title
+  );
+}
+
+function nextImage() {
+  currentIndex++;
+  if (currentIndex >= filteredMedias.length) {
+    currentIndex = 0;
+  }
+  displayLightbox(
+    filteredMedias[currentIndex].mediaElement,
+    filteredMedias[currentIndex].title
+  );
+}
+
+/**
+ * closeLightbox sert a fermer la lightbox
+ */
+
+function closeLightbox() {
+  const lightboxModal = document.getElementById('lightbox-modal');
+  lightboxModal.style.display = 'none';
+}
+
+const closeButton = document.querySelector('.close-button');
+closeButton.addEventListener('click', closeLightbox);

@@ -1,16 +1,29 @@
+/**
+ * Cette fonction gère les likes, au clic on prends un like, si l'ont reclic ça l'enlève
+ * Et ça mets a jour l'encart en bas a droite avec le total de likes
+ */
+
 const liked = {};
 
-async function toggleLike(button) {
-  // Recherchez l'index de l'élément cliqué
+function toggleLike(button) {
   const index = parseInt(button.getAttribute('data-index'));
   const media = filteredMedias[index];
+  const currentLikes = media.likes;
+  const isLiked = liked[index] === true;
 
-  // Enregistrez l'état aimé pour ce média
-  liked[media.id] = liked[media.id] === undefined ? true : !liked[media.id];
+  if (isLiked) {
+    media.likes = currentLikes - 1;
+    totalLikes -= 1;
+    liked[index] = false;
+  } else {
+    media.likes = currentLikes + 1;
+    totalLikes += 1;
+    liked[index] = true;
+  }
 
-  // Augmentez ou diminuez le nombre de likes
-  media.likes += liked[media.id] ? 1 : -1;
+  const likes = button.querySelector('i');
+  likes.textContent = media.likes;
 
-  // Mettez à jour l'interface utilisateur
-  button.innerHTML = `<i>${media.likes}</i>`;
+  const totalLikesElement = document.querySelector('.total');
+  totalLikesElement.textContent = totalLikes.toString();
 }
