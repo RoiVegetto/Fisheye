@@ -231,8 +231,8 @@ section img, section video {
     left: 50%;
     translate: -50% -50%;
     width: 50%;
-    height: 90%;
-    object-fit: cover;
+    max-height: 90%;
+    object-fit: contain;
     border-radius: 7px;
   }
 
@@ -242,8 +242,8 @@ section img, section video {
     left: 50%;
     translate: -50% -50%;
     width: 50%;
-    height: 90%;
-    object-fit: cover;
+    max-height: 90%;
+    object-fit: contain;
     border-radius: 7px;
   }
 
