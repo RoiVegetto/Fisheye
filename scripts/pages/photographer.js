@@ -75,8 +75,13 @@ async function getPhotographerDetails() {
   const photographer = photographers.find(
     (photographer) => parseInt(photographer.id) === parseInt(id)
   );
+  console.log(photographer);
+
   const medias = await getMedias();
-  return medias.filter(
+  const filteredMedias = medias.filter(
     (media) => media.photographerId === parseInt(photographer.id)
   );
+  console.log(filteredMedias);
+
+  return filteredMedias;
 }

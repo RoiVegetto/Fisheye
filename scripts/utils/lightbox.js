@@ -35,25 +35,29 @@ function displayLightbox(mediaElement, title) {
  */
 
 function previousImage() {
-  currentIndex--;
-  if (currentIndex < 0) {
-    currentIndex = filteredMedias.length - 1;
+  if (filteredMedias && filteredMedias.length > 0) {
+    currentIndex--;
+    if (currentIndex < 0) {
+      currentIndex = filteredMedias.length - 1;
+    }
+    displayLightbox(
+      filteredMedias[currentIndex].mediaElement,
+      filteredMedias[currentIndex].title
+    );
   }
-  displayLightbox(
-    filteredMedias[currentIndex].mediaElement,
-    filteredMedias[currentIndex].title
-  );
 }
 
 function nextImage() {
-  currentIndex++;
-  if (currentIndex >= filteredMedias.length) {
-    currentIndex = 0;
+  if (filteredMedias && filteredMedias.length > 0) {
+    currentIndex++;
+    if (currentIndex >= filteredMedias.length) {
+      currentIndex = 0;
+    }
+    displayLightbox(
+      filteredMedias[currentIndex].mediaElement,
+      filteredMedias[currentIndex].title
+    );
   }
-  displayLightbox(
-    filteredMedias[currentIndex].mediaElement,
-    filteredMedias[currentIndex].title
-  );
 }
 
 /**

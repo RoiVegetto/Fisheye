@@ -44,24 +44,33 @@ function displayFactory(data) {
 
 async function displayMedias() {
   const section = document.getElementById('section');
-
   section.innerHTML = '';
   const medias = await getPhotographerDetails();
-  medias.forEach((media, index) => {
+  filteredMedias = medias.map((media) => {
     let mediaElement;
-    if (media.image !== undefined) {
+    if (media.image) {
       mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title}">`;
-    } else if (media.video !== undefined) {
+    } else if (media.video) {
       mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}"></video>`;
     }
-    filteredMedias.push({
-      mediaElement,
+
+    return {
+      mediaElement: mediaElement,
       title: media.title,
       likes: media.likes,
-    }); // ajoute media.likes à filteredMedias
-    const mediaItem = `
+      date: media.date,
+    };
+  });
+
+  // tri des médias par défaut par likes
+  filteredMedias.sort((a, b) => b.likes - a.likes);
+
+  const displayMediaItems = () => {
+    section.innerHTML = '';
+    filteredMedias.forEach((media, index) => {
+      const mediaItem = `
           <div class="media">
-            ${mediaElement}
+            ${media.mediaElement}
             <div class="informations">
               <p class="p">${media.title}</p>
               <div id="media-likes">
@@ -73,26 +82,40 @@ async function displayMedias() {
             </div>
           </div>
         `;
-
-    section.innerHTML += mediaItem;
-  });
-
-  // Add event listeners for media elements
-  const mediaElements = document.querySelectorAll('.img-video');
-  mediaElements.forEach((mediaElement, index) => {
-    mediaElement.addEventListener('click', (event) => {
-      currentIndex = index;
-      displayLightbox(
-        filteredMedias[currentIndex].mediaElement,
-        filteredMedias[currentIndex].title
-      );
+      section.innerHTML += mediaItem;
     });
-  });
-}
 
-let filteredMedias = [];
-let currentIndex = 0;
-let totalLikes = 0;
+    // Ajout des écouteurs d'événements aux éléments média
+    const mediaElements = document.querySelectorAll('.img-video');
+    mediaElements.forEach((mediaElement, index) => {
+      mediaElement.addEventListener('click', (event) => {
+        currentIndex = index;
+        displayLightbox(
+          filteredMedias[currentIndex].mediaElement,
+          filteredMedias[currentIndex].title
+        );
+      });
+    });
+  };
+
+  // Ajout d'un écouteur d'événement pour trier les médias
+  const sortSelect = document.getElementById('sort-select');
+  sortSelect.addEventListener('change', (event) => {
+    const selectedOption = event.target.value;
+    if (selectedOption === 'likes') {
+      filteredMedias.sort((a, b) => b.likes - a.likes);
+    } else if (selectedOption === 'date') {
+      filteredMedias.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (selectedOption === 'title') {
+      filteredMedias.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    displayMediaItems();
+  });
+
+  displayMediaItems();
+
+  return filteredMedias;
+}
 
 /**
  * Cette fonction gère le footer, le nombre de likes total de la page et le prix du photographe
@@ -109,6 +132,11 @@ async function displayFooter() {
   const photographer = photographers.find((p) => p.id === parseInt(id));
   const price = photographer.price;
 
+  const filteredMedias = medias.filter(
+    (media) => media.photographerId === parseInt(id)
+  );
+
+  let totalLikes = 0;
   filteredMedias.forEach((media) => {
     totalLikes += media.likes;
   });
@@ -122,61 +150,8 @@ async function displayFooter() {
       <div class="prix">${price}€ / jour</div>
     </div>
   `;
-  footer.innerHTML += footerItem;
+  footer.innerHTML = footerItem;
 }
 
 displayMedias();
 displayFooter();
-
-/*  const sortSelect = document.getElementById('sort-select');
-  sortSelect.addEventListener('change', function () {
-    switch (sortSelect.value) {
-      case 'likes':
-        return filteredMedias.sort((a, b) => b.likes - a.likes);
-      case 'date':
-        return filteredMedias.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-      case 'title':
-        return filteredMedias.sort((a, b) => a.title.localeCompare(b.title));
-    }
-  });*/
-//displayMedias();
-
-/*async function sortMedias(sortCriteria) {
-  const medias = await getMedias();
-  let sortedMedias = [...filteredMedias];
-  filteredMedias = medias.slice();
-  switch (sortCriteria) {
-    case 'likes':
-      sortedMedias.sort((a, b) => b.likes - a.likes);
-      break;
-    case 'date':
-      sortedMedias.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        if (dateA < dateB) return -1;
-        if (dateA > dateB) return 1;
-        return 0;
-      });
-      break;
-    case 'title':
-      sortedMedias.sort((a, b) => {
-        const titleA = a.title.toLowerCase();
-        const titleB = b.title.toLowerCase();
-        if (titleA < titleB) return -1;
-        if (titleA > titleB) return 1;
-        return 0;
-      });
-      break;
-    default:
-      break;
-  }
-
-}
-
-const selector = document.querySelector('select');
-selector.addEventListener('change', () => {
-  const selectedOption = selector.value;
-  sortMedias(selectedOption);
-});*/
