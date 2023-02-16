@@ -1,3 +1,7 @@
+const lightboxModal = document.getElementById('lightbox-modal');
+const lightboxMediaDisplay = document.getElementById('lightbox-media-display');
+const mediaElements = document.querySelectorAll('.img-video');
+
 /**
  * Cette fonction crée l'html de la lightbox en dynamique avec ce qui est cliqué
  * Les boutons permettent de switcher entre les photos
@@ -7,15 +11,12 @@
  */
 
 function displayLightbox(mediaElement, title) {
-  const lightboxModal = document.getElementById('lightbox-modal');
-  const lightboxMediaDisplay = document.getElementById(
-    'lightbox-media-display'
-  );
   lightboxModal.style.display = 'block';
+  document.body.classList.add('lightbox-open'); // Ajouter la classe CSS
 
   let mediaHtml = mediaElement;
 
-  // Add controls to video element if it's a video
+  // Ajoute dans la balise le mot controls pour lire la vidéo
   if (mediaElement.includes('video')) {
     mediaHtml = mediaHtml.replace('<video', '<video controls');
   }
@@ -28,6 +29,12 @@ function displayLightbox(mediaElement, title) {
   </div>
   ${mediaHtml}
 `;
+
+  // Rendre l'image non sélectionnable au clavier
+  const mediaImg = lightboxMediaDisplay.querySelector('img');
+  if (mediaImg) {
+    mediaImg.setAttribute('tabindex', '-1');
+  }
 }
 
 /**
@@ -65,9 +72,15 @@ function nextImage() {
  */
 
 function closeLightbox() {
-  const lightboxModal = document.getElementById('lightbox-modal');
   lightboxModal.style.display = 'none';
+  document.body.classList.remove('lightbox-open'); // Retirer la classe CSS
 }
+
+lightboxModal.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    closeLightbox();
+  }
+});
 
 const closeButton = document.querySelector('.close-button');
 closeButton.addEventListener('click', closeLightbox);

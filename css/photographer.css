@@ -285,3 +285,11 @@ section img, section video {
     position: absolute;
     color: #901C1C;
 }
+
+.modal-open > *:not(#contact_modal) {
+    display: none;
+  }
+
+.lightbox-open > *:not(.lightbox) {
+    display: none;
+  }

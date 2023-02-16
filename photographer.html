@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang='fr'>
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
   <body>
     <header>
       <a href="index.html" aria-label="Retour à la liste des photographes">
-        <img src="assets/images/logo.png" class="logo" />
+        <img src="assets/images/logo.png" class="logo" alt="Logo du site"/>
       </a>
     </header>
     <main id="main">
@@ -22,10 +22,10 @@
           <div id="tagline"></div>
         </div>
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-        <img id="image" src="" alt="">
+        <img id="image" src="" alt="Photo de profil du photographe">
       </div>
       <div id="label">
-        <label for="select">Trier par</label>
+        <label for="sort-select">Trier par</label>
         <select name="" id="sort-select">
           <option value="likes" selected>Popularité</option>
           <option value="date">Date</option>
@@ -41,26 +41,26 @@
 			<div class="modal">
 				<header>
           <h2 id="name-form"></h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+          <img src="assets/icons/close.svg" onclick="closeModal()" alt="Fermeture de la modal" tabindex="0"/>
         </header>
 				<form>
 					<div>
-						<label>Prénom</label>
-						<input type="text" required/>
-            <label>Nom</label>
-						<input type="text" required/>
-            <label>Email</label>
-						<input type="email" required/>
-            <label>Votre message</label>
-						<input class="input-message" type="text" required minlength="10" maxlength="200" />
+						<label for="Prénom">Prénom</label>
+						<input type="text" id="Prénom" required/>
+            <label for="Nom de famille">Nom</label>
+						<input type="text" id="Nom de famille" required/>
+            <label for="Email">Email</label>
+						<input type="email" id="Email" required/>
+            <label for="Message">Votre message</label>
+						<input class="input-message" id="Message" type="text" required minlength="10" maxlength="200" />
 					</div>
-          <button class="contact_button" type="submit" onclick="submitForm()">Envoyer</button>
+          <button class="contact_button" type="submit">Envoyer</button>
 				</form>
 			</div>
 		</div>
     <div id="lightbox-modal" class="modal1">
       <div class="modal-content">
-        <span class="close-button">x</span>
+        <span class="close-button" tabindex="0">x</span>
         <div id="lightbox-media-display"></div>
       </div>
     </div>

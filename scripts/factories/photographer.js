@@ -49,9 +49,9 @@ async function displayMedias() {
   filteredMedias = medias.map((media) => {
     let mediaElement;
     if (media.image) {
-      mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title}">`;
+      mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title} aria-label="${media.title}" tabindex="0">`;
     } else if (media.video) {
-      mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}"></video>`;
+      mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title} aria-label="${media.title}" tabindex="0"></video>`;
     }
 
     return {
@@ -88,13 +88,27 @@ async function displayMedias() {
     // Ajout des écouteurs d'événements aux éléments média
     const mediaElements = document.querySelectorAll('.img-video');
     mediaElements.forEach((mediaElement, index) => {
-      mediaElement.addEventListener('click', (event) => {
+      mediaElement.addEventListener('click', () => {
         currentIndex = index;
         displayLightbox(
           filteredMedias[currentIndex].mediaElement,
           filteredMedias[currentIndex].title
         );
       });
+    });
+    // Ici au clavier on peut ouvrir la lightbox avec le contenu concerné
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        const activeMediaElement = document.activeElement;
+        if (activeMediaElement.classList.contains('img-video')) {
+          const index = Array.from(mediaElements).indexOf(activeMediaElement);
+          const title = activeMediaElement.getAttribute('data-title');
+          displayLightbox(
+            filteredMedias[index].mediaElement,
+            filteredMedias[index].title
+          );
+        }
+      }
     });
   };
 
