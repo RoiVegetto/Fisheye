@@ -1,7 +1,7 @@
 const lightboxModal = document.getElementById('lightbox-modal');
 const lightboxMediaDisplay = document.getElementById('lightbox-media-display');
 const mediaElements = document.querySelectorAll('.img-video');
-
+console.log(mediaElements);
 /**
  * Cette fonction crée l'html de la lightbox en dynamique avec ce qui est cliqué
  * Les boutons permettent de switcher entre les photos
@@ -10,11 +10,37 @@ const mediaElements = document.querySelectorAll('.img-video');
  * @param {*} title
  */
 
+// Ajout des écouteurs d'événements aux éléments média
+mediaElements.forEach((mediaElement, index) => {
+  mediaElement.addEventListener('click', () => {
+    currentIndex = index;
+    displayLightbox(
+      createMediaElement(mediaArray[currentIndex]),
+      mediaArray[currentIndex].title
+    );
+  });
+});
+
+// Ici au clavier on peut ouvrir la lightbox avec le contenu concerné
+window.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    const activeMediaElement = document.activeElement;
+    if (activeMediaElement.classList.contains('media-element')) {
+      const index = Array.from(mediaElements).indexOf(activeMediaElement);
+      const title = activeMediaElement.getAttribute('data-title');
+      displayLightbox(
+        createMediaElement(mediaArray[index]),
+        mediaArray[index].title
+      );
+    }
+  }
+});
+
 function displayLightbox(mediaElement, title) {
   lightboxModal.style.display = 'block';
   document.body.classList.add('lightbox-open'); // Ajouter la classe CSS
 
-  let mediaHtml = mediaElement;
+  let mediaHtml = createMediaElement();
 
   // Ajoute dans la balise le mot controls pour lire la vidéo
   if (mediaElement.includes('video')) {
@@ -84,3 +110,19 @@ lightboxModal.addEventListener('keydown', function (event) {
 
 const closeButton = document.querySelector('.close-button');
 closeButton.addEventListener('click', closeLightbox);
+
+// ajout d'un gestionnaire d'événement au document pour écouter la touche "échap"
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    closeLightbox();
+  }
+});
+
+// Même chose que pour echap, en allant a gauche ou a droite
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'ArrowLeft') {
+    previousImage();
+  } else if (event.key === 'ArrowRight') {
+    nextImage();
+  }
+});

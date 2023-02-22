@@ -8,14 +8,16 @@ function toggleLike(button) {
   const index = parseInt(button.getAttribute('data-index'));
   const media = filteredMedias[index];
   const currentLikes = media.likes;
-  const isLiked = liked[index] === true;
+  const isLiked = media.liked === true;
 
   if (isLiked) {
     media.likes = currentLikes - 1;
-    liked[index] = false;
+    media.liked = false;
+    button.querySelector('.fa-heart').classList.remove('fa-solid');
   } else {
     media.likes = currentLikes + 1;
-    liked[index] = true;
+    media.liked = true;
+    button.querySelector('.fa-heart').classList.add('fa-solid');
   }
 
   const likes = button.querySelector('i');
@@ -25,3 +27,4 @@ function toggleLike(button) {
   const totalLikesElement = document.querySelector('.total');
   totalLikesElement.textContent = totalLikes.toString();
 }
+

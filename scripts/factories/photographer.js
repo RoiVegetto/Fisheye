@@ -46,21 +46,19 @@ async function displayMedias() {
   const section = document.getElementById('section');
   section.innerHTML = '';
   const medias = await getPhotographerDetails();
-  filteredMedias = medias.map((media) => {
-    let mediaElement;
-    if (media.image) {
-      mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title} aria-label="${media.title}" tabindex="0">`;
-    } else if (media.video) {
-      mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title} aria-label="${media.title}" tabindex="0"></video>`;
-    }
 
-    return {
-      mediaElement: mediaElement,
-      title: media.title,
-      likes: media.likes,
-      date: media.date,
-    };
-  });
+  filteredMedias = medias.reduce((acc, media) => {
+    const mediaElement = createMediaElement(media);
+    if (mediaElement) {
+      acc.push({
+        mediaElement: mediaElement,
+        title: media.title,
+        likes: media.likes,
+        date: media.date,
+      });
+    }
+    return acc;
+  }, []);
 
   // tri des médias par défaut par likes
   filteredMedias.sort((a, b) => b.likes - a.likes);
@@ -74,41 +72,15 @@ async function displayMedias() {
             <div class="informations">
               <p class="p">${media.title}</p>
               <div id="media-likes">
-                <button class="button-like" onclick="toggleLike(this)" data-index="${index}">
-                  <i>${media.likes}</i>
-                </button>
-                <i class="fa-solid fa-heart"></i>
-              </div>
+              <button class="button-like" onclick="toggleLike(this)" data-index="${index}">
+              <i>${media.likes}</i>
+              <span class="heart-icon"><i class="fa fa-heart far"></i></span>
+            </button>            
+            </div>            
             </div>
           </div>
         `;
       section.innerHTML += mediaItem;
-    });
-
-    // Ajout des écouteurs d'événements aux éléments média
-    const mediaElements = document.querySelectorAll('.img-video');
-    mediaElements.forEach((mediaElement, index) => {
-      mediaElement.addEventListener('click', () => {
-        currentIndex = index;
-        displayLightbox(
-          filteredMedias[currentIndex].mediaElement,
-          filteredMedias[currentIndex].title
-        );
-      });
-    });
-    // Ici au clavier on peut ouvrir la lightbox avec le contenu concerné
-    window.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        const activeMediaElement = document.activeElement;
-        if (activeMediaElement.classList.contains('img-video')) {
-          const index = Array.from(mediaElements).indexOf(activeMediaElement);
-          const title = activeMediaElement.getAttribute('data-title');
-          displayLightbox(
-            filteredMedias[index].mediaElement,
-            filteredMedias[index].title
-          );
-        }
-      }
     });
   };
 
@@ -125,9 +97,7 @@ async function displayMedias() {
     }
     displayMediaItems();
   });
-
   displayMediaItems();
-
   return filteredMedias;
 }
 

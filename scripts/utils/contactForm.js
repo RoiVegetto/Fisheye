@@ -51,6 +51,13 @@ closeModalButton.addEventListener('keydown', function (event) {
   }
 });
 
+// ajout d'un gestionnaire d'événement au document pour écouter la touche "échap"
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape' && modal.style.display === 'flex') {
+    closeModal();
+  }
+});
+
 // fonction de fermeture de la modal
 function closeModal() {
   modal.style.display = 'none';

@@ -82,6 +82,15 @@ async function getPhotographerDetails() {
     (media) => media.photographerId === parseInt(photographer.id)
   );
   console.log(filteredMedias);
-
   return filteredMedias;
 }
+
+function createMediaElement(media) {
+  if (media.image) {
+    return `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title}" aria-label="${media.title}" tabindex="0">`;
+  } else if (media.video) {
+    return `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}" aria-label="${media.title}" tabindex="0"></video>`;
+  }
+}
+
+console.log(createMediaElement({image: "mon-image.jpg", title: "Mon image"}));
