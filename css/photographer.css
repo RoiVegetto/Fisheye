@@ -259,7 +259,7 @@ section img, section video {
     border: none;
     background: none;
     font-size: 75px;
-    left: 350px;
+    left: 18%;
     cursor: pointer;
 }
 
@@ -271,7 +271,7 @@ section img, section video {
     border: none;
     background: none;
     font-size: 75px;
-    right: 350px;
+    right: 18%;
     cursor: pointer;
 }
   

@@ -47,14 +47,10 @@ async function displayMedias() {
   section.innerHTML = '';
   const medias = await getPhotographerDetails();
   filteredMedias = medias.map((media) => {
-    let mediaElement;
-    if (media.image) {
-      mediaElement = `<img class="img-video" src="./assets/images/${media.image}" alt="${media.title}" aria-label="${media.title}" tabindex="0" data-title="${media.title}">`;
-    } else if (media.video) {
-      mediaElement = `<video class="img-video" src="./assets/videos/${media.video}" alt="${media.title}" aria-label="${media.title}" tabindex="0" data-title="${media.title}"></video>`;
-    }
+    const mediaElement = mediaFactory(media).getMediaDOM();
+    console.log(mediaElement);
     return {
-      mediaElement: mediaElement,
+      mediaElement,
       title: media.title,
       likes: media.likes,
       date: media.date,
@@ -83,8 +79,7 @@ async function displayMedias() {
       section.innerHTML += mediaItem;
     });
 
-
-  // Ajout des écouteurs d'événements aux éléments média
+    // Ajout des écouteurs d'événements aux éléments média
     const mediaElements = document.querySelectorAll('.img-video');
     mediaElements.forEach((mediaElement, index) => {
       mediaElement.addEventListener('click', () => {
@@ -95,20 +90,19 @@ async function displayMedias() {
         );
       });
     });
-  // Ici au clavier on peut ouvrir la lightbox avec le contenu concerné
-  window.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-      const activeMediaElement = document.activeElement;
-      if (activeMediaElement.classList.contains('img-video')) {
-        const index = Array.from(mediaElements).indexOf(activeMediaElement);
-        const title = activeMediaElement.getAttribute('data-title');
-        displayLightbox(
-          filteredMedias[index].mediaElement,
-          filteredMedias[index].title
-        );
+    // Ici au clavier on peut ouvrir la lightbox avec le contenu concerné
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        const activeMediaElement = document.activeElement;
+        if (activeMediaElement.classList.contains('img-video')) {
+          const index = Array.from(mediaElements).indexOf(activeMediaElement);
+          displayLightbox(
+            filteredMedias[index].mediaElement,
+            filteredMedias[index].title
+          );
+        }
       }
-    }
-  });
+    });
   };
 
   // Ajout d'un écouteur d'événement pour trier les médias

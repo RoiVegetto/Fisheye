@@ -2,7 +2,6 @@
  * Cette fonction gère les likes, au clic on prends un like, si l'ont reclic ça l'enlève
  * Et ça mets a jour l'encart en bas a droite avec le total de likes
  */
-const liked = {};
 
 function toggleLike(button) {
   const index = parseInt(button.getAttribute('data-index'));
@@ -27,4 +26,3 @@ function toggleLike(button) {
   const totalLikesElement = document.querySelector('.total');
   totalLikesElement.textContent = totalLikes.toString();
 }
-

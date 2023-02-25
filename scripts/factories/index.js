@@ -15,8 +15,10 @@ function photographerFactory(data) {
 
   function getUserCardDOM() {
     const article = document.createElement('article');
-    article.setAttribute('id', id);
     const imgContainer = document.createElement('a');
+    const imgAlt = 'Photo de profil du photographe' + ' ' + name;
+
+    article.setAttribute('id', id);
     imgContainer.classList.add('profile-picture-container');
     imgContainer.setAttribute('href', 'photographer.html?id=' + id);
     imgContainer.addEventListener('keypress', function (event) {
@@ -24,8 +26,10 @@ function photographerFactory(data) {
         imgContainer.click();
       }
     });
+
     const img = document.createElement('img');
     img.setAttribute('src', picture);
+    img.setAttribute('alt', imgAlt);
     const h2 = document.createElement('h2');
     h2.textContent = name;
     const location = document.createElement('p');
@@ -59,4 +63,3 @@ function photographerFactory(data) {
     getUserCardDOM,
   };
 }
-

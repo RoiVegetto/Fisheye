@@ -84,4 +84,3 @@ async function getPhotographerDetails() {
   console.log(filteredMedias);
   return filteredMedias;
 }
-
