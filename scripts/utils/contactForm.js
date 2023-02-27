@@ -1,8 +1,8 @@
 const modal = document.getElementById('contact_modal');
 const form = modal.querySelector('form');
-const firstNameInput = form.querySelector('input[type="text"]:nth-of-type(1)');
-const lastNameInput = form.querySelector('input[type="text"]:nth-of-type(2)');
-const emailInput = form.querySelector('input[type="email"]');
+const firstNameInput = form.querySelector('#Prénom');
+const lastNameInput = form.querySelector('#nom-de-famille');
+const emailInput = form.querySelector('#Email');
 const messageInput = form.querySelector('.input-message');
 const closeModalButton = modal.querySelector('img');
 const submitButton = form.querySelector('button[type="submit"]');
@@ -29,6 +29,10 @@ function validateForm(event) {
     messageInput.value
   ) {
     // les champs sont remplis et valides, on peut supprimer les valeurs
+    console.log('Nom:', lastNameInput.value);
+    console.log('Prénom:', firstNameInput.value);
+    console.log('Email:', emailInput.value);
+    console.log('Message:', messageInput.value);
     firstNameInput.value = '';
     lastNameInput.value = '';
     emailInput.value = '';
