@@ -99,3 +99,27 @@ document.addEventListener('keydown', function (event) {
     nextImage();
   }
 });
+
+// Ajoute des écouteurs d'événements aux éléments média
+function addMediaEventListeners(filteredMedias) {
+  const mediaElements = document.querySelectorAll('.img-video');
+  mediaElements.forEach((mediaElement, index) => {
+    mediaElement.addEventListener('click', () => {
+      currentIndex = index;
+      displayLightbox(
+        filteredMedias[currentIndex].mediaElement,
+        filteredMedias[currentIndex].title
+      );
+    });
+
+    mediaElement.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        currentIndex = index;
+        displayLightbox(
+          filteredMedias[currentIndex].mediaElement,
+          filteredMedias[currentIndex].title
+        );
+      }
+    });
+  });
+}

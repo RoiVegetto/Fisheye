@@ -80,45 +80,19 @@ async function displayMedias() {
     });
 
     // Ajout des écouteurs d'événements aux éléments média
-    const mediaElements = document.querySelectorAll('.img-video');
-
-    mediaElements.forEach((mediaElement, index) => {
-      mediaElement.addEventListener('click', () => {
-        currentIndex = index;
-        displayLightbox(
-          filteredMedias[currentIndex].mediaElement,
-          filteredMedias[currentIndex].title
-        );
-      });
-
-      // Ajout d'un event listener pour la touche "Entrée"
-      mediaElement.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          currentIndex = index;
-          displayLightbox(
-            filteredMedias[currentIndex].mediaElement,
-            filteredMedias[currentIndex].title
-          );
-        }
-      });
-    });
+    addMediaEventListeners(filteredMedias);
   };
+
+  // appel initial pour afficher les médias triés par défaut
+  displayMediaItems();
 
   // Ajout d'un écouteur d'événement pour trier les médias
   const sortSelect = document.getElementById('sort-select');
   sortSelect.addEventListener('change', (event) => {
     const selectedOption = event.target.value;
-    if (selectedOption === 'likes') {
-      filteredMedias.sort((a, b) => b.likes - a.likes);
-    } else if (selectedOption === 'date') {
-      filteredMedias.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (selectedOption === 'title') {
-      filteredMedias.sort((a, b) => a.title.localeCompare(b.title));
-    }
+    filteredMedias = sortMedias(filteredMedias, selectedOption);
     displayMediaItems();
   });
-  displayMediaItems();
-  return filteredMedias;
 }
 
 /**
