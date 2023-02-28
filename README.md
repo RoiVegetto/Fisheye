@@ -2,5 +2,4 @@
 
 ## Démarrer le projet
 
-Rien à installer ici, il suffit d'ouvrir le fichier `index.html`.
-
+Pour démarrer le projet il faut installer le contenu, eslint et live-server ( version indiquée dans le package.json )
