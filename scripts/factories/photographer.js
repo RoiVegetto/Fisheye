@@ -81,6 +81,7 @@ async function displayMedias() {
 
     // Ajout des écouteurs d'événements aux éléments média
     const mediaElements = document.querySelectorAll('.img-video');
+
     mediaElements.forEach((mediaElement, index) => {
       mediaElement.addEventListener('click', () => {
         currentIndex = index;
@@ -89,19 +90,17 @@ async function displayMedias() {
           filteredMedias[currentIndex].title
         );
       });
-    });
-    // Ici au clavier on peut ouvrir la lightbox avec le contenu concerné
-    window.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        const activeMediaElement = document.activeElement;
-        if (activeMediaElement.classList.contains('img-video')) {
-          const index = Array.from(mediaElements).indexOf(activeMediaElement);
+
+      // Ajout d'un event listener pour la touche "Entrée"
+      mediaElement.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          currentIndex = index;
           displayLightbox(
-            filteredMedias[index].mediaElement,
-            filteredMedias[index].title
+            filteredMedias[currentIndex].mediaElement,
+            filteredMedias[currentIndex].title
           );
         }
-      }
+      });
     });
   };
 
