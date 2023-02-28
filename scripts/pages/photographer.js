@@ -1,48 +1,36 @@
-/**
- * Ici je vais chercher les informations du fichier JSON
- * @returns
- */
+let cachedData = null;
+let cachedPhotographerDetails = null;
+
+async function getData() {
+  if (cachedData) {
+    return cachedData;
+  }
+  const url = './data/photographers.json';
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    cachedData = data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+}
 
 async function getPhotographers() {
-  const url = './data/photographers.json';
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.photographers;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
+  const data = await getData();
+  return data.photographers;
 }
 
-/**
- * Ici nous avons la même fonction que getPhotographers sauf qu'elle vise les médias
- * @returns
- */
-
-async function getMedias() {
-  const url = './data/photographers.json';
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.media;
-  } catch (error) {
-    console.error(error);
-    return [];
+async function getPhotographerDetails() {
+  if (cachedPhotographerDetails) {
+    return cachedPhotographerDetails;
   }
-}
-
-/**
- * Ici nous allons dispatché la data, parsé l'ID
- * @returns
- */
-
-async function displayData() {
+  const data = await getData();
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
 
-  const photographers = await getPhotographers();
-  const photographer = photographers.find(
+  const photographer = data.photographers.find(
     (photographer) => parseInt(photographer.id) === parseInt(id)
   );
 
@@ -51,36 +39,12 @@ async function displayData() {
     return;
   }
 
-  const photographerModel = displayFactory(photographer);
-  photographerModel.displayPhotographer();
-}
-
-async function init() {
-  // Récupère les datas des photographes
-  const photographers = await getPhotographers();
-  displayData();
-}
-
-init();
-
-/**
- * Cette fonction a pour but de rajouter l'id dans l'URL et de lancer la fonction displayMedia
- */
-
-async function getPhotographerDetails() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const id = urlParams.get('id');
-
-  const photographers = await getPhotographers();
-  const photographer = photographers.find(
-    (photographer) => parseInt(photographer.id) === parseInt(id)
-  );
-  console.log(photographer);
-
-  const medias = await getMedias();
-  const filteredMedias = medias.filter(
+  const filteredMedias = data.media.filter(
     (media) => media.photographerId === parseInt(photographer.id)
   );
-  console.log(filteredMedias);
-  return filteredMedias;
+
+  displayPhotographerData(photographer);
+
+  cachedPhotographerDetails = filteredMedias;
+  return cachedPhotographerDetails;
 }

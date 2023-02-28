@@ -1,3 +1,9 @@
+/**
+ * Fonction qui gère le fait d'avoir une image ou une vidéo dans l'élément visé
+ * @param {*} media
+ * @returns
+ */
+
 function mediaFactory(media) {
   const { image, video } = media;
   function getMediaDOM() {

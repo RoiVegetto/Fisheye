@@ -5,35 +5,24 @@
  * @returns
  */
 
-function displayFactory(data) {
+function displayPhotographerData(data) {
   const { name, city, country, tagline, portrait } = data;
   const picture = `assets/photographers/${portrait}`;
 
-  function displayPhotographer() {
-    const nameDiv = document.getElementById('name');
-    nameDiv.textContent = name;
-    // name-form vise le nom dans la modal
-    const nameModal = document.getElementById('name-form');
-    nameModal.innerHTML = 'Contactez-moi<br>' + name;
+  const nameDiv = document.getElementById('name');
+  nameDiv.textContent = name;
 
-    const locationDiv = document.getElementById('location');
-    locationDiv.textContent = `${city}, ${country}`;
+  const nameModal = document.getElementById('name-form');
+  nameModal.innerHTML = 'Contactez-moi<br>' + name;
 
-    const taglineDiv = document.getElementById('tagline');
-    taglineDiv.textContent = tagline;
+  const locationDiv = document.getElementById('location');
+  locationDiv.textContent = `${city}, ${country}`;
 
-    const imgDiv = document.getElementById('image');
-    imgDiv.setAttribute('src', picture);
-  }
+  const taglineDiv = document.getElementById('tagline');
+  taglineDiv.textContent = tagline;
 
-  return {
-    name,
-    city,
-    country,
-    tagline,
-    picture,
-    displayPhotographer,
-  };
+  const imgDiv = document.getElementById('image');
+  imgDiv.setAttribute('src', picture);
 }
 
 /**
@@ -48,7 +37,6 @@ async function displayMedias() {
   const medias = await getPhotographerDetails();
   filteredMedias = medias.map((media) => {
     const mediaElement = mediaFactory(media).getMediaDOM();
-    console.log(mediaElement);
     return {
       mediaElement,
       title: media.title,
@@ -56,7 +44,6 @@ async function displayMedias() {
       date: media.date,
     };
   });
-  // tri des médias par défaut par likes
   filteredMedias.sort((a, b) => b.likes - a.likes);
 
   const displayMediaItems = () => {
@@ -79,14 +66,11 @@ async function displayMedias() {
       section.innerHTML += mediaItem;
     });
 
-    // Ajout des écouteurs d'événements aux éléments média
     addMediaEventListeners(filteredMedias);
   };
 
-  // appel initial pour afficher les médias triés par défaut
   displayMediaItems();
 
-  // Ajout d'un écouteur d'événement pour trier les médias
   const sortSelect = document.getElementById('sort-select');
   sortSelect.addEventListener('change', (event) => {
     const selectedOption = event.target.value;
@@ -101,21 +85,17 @@ async function displayMedias() {
 
 async function displayFooter() {
   const footer = document.getElementById('footer');
-  const photographers = await getPhotographers();
-  const medias = await getMedias();
+  const data = await getData();
 
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
 
-  const photographer = photographers.find((p) => p.id === parseInt(id));
+  const photographer = data.photographers.find((p) => p.id === parseInt(id));
   const price = photographer.price;
 
-  const filteredMedias = medias.filter(
-    (media) => media.photographerId === parseInt(id)
-  );
-
+  const medias = await getPhotographerDetails();
   let totalLikes = 0;
-  filteredMedias.forEach((media) => {
+  medias.forEach((media) => {
     totalLikes += media.likes;
   });
 
