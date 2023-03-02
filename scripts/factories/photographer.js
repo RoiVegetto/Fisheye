@@ -31,10 +31,10 @@ function displayPhotographerData(data) {
  * @param {*} photographerId
  */
 
-async function displayMedias() {
+function displayMedias(data) {
   const section = document.getElementById('section');
   section.innerHTML = '';
-  const medias = await getPhotographerDetails();
+  const medias = getPhotographerDetails(data);
   filteredMedias = medias.map((media) => {
     const mediaElement = mediaFactory(media).getMediaDOM();
     return {
@@ -83,9 +83,8 @@ async function displayMedias() {
  * Cette fonction gère le footer, le nombre de likes total de la page et le prix du photographe
  */
 
-async function displayFooter() {
+async function displayFooter(data) {
   const footer = document.getElementById('footer');
-  const data = await getData();
 
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
@@ -93,7 +92,7 @@ async function displayFooter() {
   const photographer = data.photographers.find((p) => p.id === parseInt(id));
   const price = photographer.price;
 
-  const medias = await getPhotographerDetails();
+  const medias = await getPhotographerDetails(data);
   let totalLikes = 0;
   medias.forEach((media) => {
     totalLikes += media.likes;
@@ -111,5 +110,10 @@ async function displayFooter() {
   footer.innerHTML = footerItem;
 }
 
-displayMedias();
-displayFooter();
+async function init() {
+  const data = await getData();
+  displayMedias(data);
+  displayFooter(data);
+}
+
+init();

@@ -10,6 +10,7 @@ async function getData() {
     const response = await fetch(url);
     const data = await response.json();
     cachedData = data;
+    cachedPhotographerDetails = data.media;
     return data;
   } catch (error) {
     console.error(error);
@@ -17,16 +18,8 @@ async function getData() {
   }
 }
 
-async function getPhotographers() {
-  const data = await getData();
-  return data.photographers;
-}
-
-async function getPhotographerDetails() {
-  if (cachedPhotographerDetails) {
-    return cachedPhotographerDetails;
-  }
-  const data = await getData();
+function getPhotographerDetails(data) {
+//  const data = await getData();
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
 
@@ -39,12 +32,11 @@ async function getPhotographerDetails() {
     return;
   }
 
-  const filteredMedias = data.media.filter(
+  const filteredMedias = cachedPhotographerDetails.filter(
     (media) => media.photographerId === parseInt(photographer.id)
   );
 
   displayPhotographerData(photographer);
 
-  cachedPhotographerDetails = filteredMedias;
-  return cachedPhotographerDetails;
+  return filteredMedias;
 }
